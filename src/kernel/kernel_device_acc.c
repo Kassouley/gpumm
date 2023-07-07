@@ -23,3 +23,24 @@ void kernel (unsigned int n, double* a, const double* b, const double* c)
     }
 }
 #endif
+
+#ifdef OPENACC_WO_DT
+void kernel (unsigned int n, double* a, const double* b, const double* c)
+{
+    #pragma acc data deviceptr(a,b,c)
+    {
+        #pragma acc loop independent gang vector
+        for(unsigned int i = 0; i < n; i++)
+        {
+            for(unsigned int j = 0; j < n; j++)
+            {
+                a[i*n+j] = 0;
+                for(unsigned int k = 0; k < n; k++)
+                {
+                    a[i*n+j] += b[i*n+k] * c[k*n+j];
+                }
+            }
+        }
+    }
+}
+#endif

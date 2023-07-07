@@ -35,7 +35,7 @@
 
 #if defined(ROCBLAS_WO_DT) || defined(ROCBLAS)
 #define GPUMM_HANDLE_ENABLE
-typedef rocblas_handle GPUMM_BLAS_HANDLE;
+#define GPUMM_BLAS_HANDLE rocblas_handle
 #define GPUMM_HANDLE_CREATE(handle) \
 {\
     rocblas_create_handle(&handle);\

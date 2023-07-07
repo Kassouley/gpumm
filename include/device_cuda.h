@@ -14,7 +14,7 @@
 
 #define GPUMM_ALLOC(ptr, size) \
 {\
-    CHECK(cudaMalloc(&ptr, size));
+    CHECK(cudaMalloc(&ptr, size)); \
 }
 
 #define GPUMM_MEMCPY_HtD(dst,src,size) \
@@ -29,13 +29,12 @@
 
 #define GPUMM_FREE(ptr) \
 {\
-    CHECK(cudaFree(d_c));\
+    CHECK(cudaFree(ptr));\
 }
-
 
 #if defined(CUBLAS_WO_DT) || defined(CUBLAS)
 #define GPUMM_HANDLE_ENABLE
-typedef cublasHandle_t GPUMM_BLAS_HANDLE;
+#define GPUMM_BLAS_HANDLE cublasHandle_t
 #define GPUMM_HANDLE_CREATE(handle) \
 {\
     cublasCreate(&handle);\

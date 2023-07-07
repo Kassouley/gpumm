@@ -35,7 +35,6 @@ __global__ void kernel_cuda (unsigned int n, double* a, const double* b, const d
 #include "device_acc.h"
 #endif
 
-
 void kernel (unsigned int n, double* a, const double* b, const double* c);
 
 #endif

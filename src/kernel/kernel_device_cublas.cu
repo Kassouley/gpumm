@@ -21,17 +21,9 @@ void kernel (unsigned int n, double* a, const double* b, const double* c)
     CHECK(cudaMemcpy(d_b, b, size, cudaMemcpyHostToDevice));
     CHECK(cudaMemcpy(d_c, c, size, cudaMemcpyHostToDevice));
 
-    dim3 nbThreads (n, n);
-    dim3 nbBlocks (1,1);
-    
-    if ( n > 32 )
-    {
-        nbThreads.x = 32;
-        nbThreads.y = 32;
-        nbBlocks.x = ceil(double(n)/double(nbThreads.x));
-        nbBlocks.y = ceil(double(n)/double(nbThreads.y));
-    }
-    cublasSgemm(handle, CUBLAS_OP_N, CUBLAS_OP_N, n, n, n, &alpha, d_b, n, d_c, n, &beta, d_a, n);
+    double alpha = 1.0f;
+    double beta = 0.0f;
+    cublasDgemm(handle, CUBLAS_OP_N, CUBLAS_OP_N, n, n, n, &alpha, d_c, n, d_b, n, &beta, d_a, n);
         
 	CHECK(cudaMemcpy(a, d_a, size, cudaMemcpyDeviceToHost));
 
@@ -45,8 +37,8 @@ void kernel (unsigned int n, double* a, const double* b, const double* c)
 #ifdef CUBLAS_WO_DT
 void kernel (unsigned int n, double* a, const double* b, const double* c)
 { 
-    float alpha = 1.0f;
-    float beta = 0.0f;
-    cublasSgemm(handle, CUBLAS_OP_N, CUBLAS_OP_N, n, n, n, &alpha, b, n, c, n, &beta, a, n);
+    double alpha = 1.0f;
+    double beta = 0.0f;
+    cublasDgemm(handle, CUBLAS_OP_N, CUBLAS_OP_N, n, n, n, &alpha, c, n, b, n, &beta, a, n);
 }
 #endif
