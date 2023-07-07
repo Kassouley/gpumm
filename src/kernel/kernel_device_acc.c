@@ -8,7 +8,8 @@ void kernel (unsigned int n, double* a, const double* b, const double* c)
 {
     #pragma acc data copyin(b[0:n*n], c[0:n*n]) copyout(a[0:n*n])
     {
-        #pragma acc loop independent gang vector
+        #pragma acc kernels
+        // #pragma acc loop independent gang vector
         for(unsigned int i = 0; i < n; i++)
         {
             for(unsigned int j = 0; j < n; j++)

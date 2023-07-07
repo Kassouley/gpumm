@@ -29,8 +29,9 @@ usage()
 
 check_error()
 {
-  if [ $? -ne 0 ]; then
-    echo -e "gpumm: error in $0\n\t$1 ($?)"
+  err=$?
+  if [ $err -ne 0 ]; then
+    echo -e "gpumm: error in $0\n\t$1 ($err)"
     echo "Script exit."
     exit 1
   fi
@@ -123,6 +124,8 @@ TEMP=$(getopt -o hfavms::p:: \
 
 eval set -- "$TEMP"
 
+echo $TEMP
+
 if [ $? != 0 ]; then usage ; fi
 
 while true ; do
@@ -154,7 +157,7 @@ data_size=100
 for i in $@; do 
   if [[ " ${kernel_list[*]} " =~ " ${i} " ]] && [ $all == 0 ]; then
     kernel_to_measure+=" $i"
-  elif [[ $1 =~ $re ]]; then
+  elif [[ $i =~ $re ]]; then
     data_size="$i"
   fi
 done

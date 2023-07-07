@@ -40,7 +40,7 @@ else ifneq ($(filter $(KERNEL), GPU_OMP GPU_OMP_WO_DT),)
 		OPT_FLAGS=-fopenmp -mp=gpu -Minfo=mp
 	endif
 else ifneq ($(filter $(KERNEL), OPENACC OPENACC_WO_DT),)
-	OPT_FLAGS=-acc -Minfo=accel
+	OPT_FLAGS=-acc -acc=gpu -gpu=cc80 -Minfo=accel 
 else ifneq ($(filter $(KERNEL), CUDA CUDA_WO_DT CUBLAS CUBLAS_WO_DT),)
 	OPT_FLAGS=-gencode=arch=compute_52,code=sm_52 \
   			  -gencode=arch=compute_60,code=sm_60 \
