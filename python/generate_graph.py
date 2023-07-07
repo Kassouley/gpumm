@@ -14,8 +14,9 @@ def read_data(file):
         line = file.readline()
         if not line:
                 break
-        line = line.replace('\n', '', 1)
-        line = line.split(sep="| ")
+        line = line.replace('\n', '')
+        line = line.replace(' ', '')
+        line = line.split(sep="|")
         label.append(line[0])
         minimum.append(float(line[1]))
         median.append(float(line[2]))
