@@ -121,8 +121,7 @@ TEMP=$(getopt -o hfavms::p:: \
               -l help,force,all,verbose,millisecond,save::,plot:: \
               -n $(basename $0) -- "$@")
 
-echo $TEMP
-
+eval set -- "$TEMP"
 
 if [ $? != 0 ]; then usage ; fi
 
@@ -143,7 +142,7 @@ while true ; do
                 *)  plot=1; plot_file="$2" ; shift 2 ;;
             esac ;;
         --) shift ; break ;;
-        -h|--help|*) usage ;;
+        -h|--help|*) echo "No option $1."; usage ;;
     esac
 done
 
