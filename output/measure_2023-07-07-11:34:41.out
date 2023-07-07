@@ -1,0 +1,4 @@
+     kernel    |     minimum     |     median     |   median/it   |   stability
+ gpu_omp_wo_dt |          148896 |         152460 |      0.152460 |     2.393617
+       rocblas |          291348 |         292382 |      0.292382 |     0.354875
+ rocblas_wo_dt |           12528 |        12854.2 |      0.012854 |     2.603448

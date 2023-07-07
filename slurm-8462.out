@@ -1,0 +1,76 @@
+Chargement des modules
+
+You can now load modules for a product belonging to Nvidia NVHPC.
+To list Nvidia NVHPC modules type :
+   module available
+
+The modules are under the section /usr/local/nvidia/nvhpc/modulefiles
+
+Loading python-tools/3.10.9
+  Loading requirement: conda/22.11.1
+Loading openblas/gnu/0.3.21
+  Loading requirement: binutils/11.2.0 gnu/11.2.0
+Chargement des modules terminés
+Measures in progress . . .
+Build kernel cpu_omp . . .
+src/tab.c:
+src/rdtsc.c:
+src/print_measure.c:
+src/time_measure.c:
+./src/kernel/kernel_cpu.c:
+./src/bench/driver_cpu.c:
+Measure kernel cpu_omp (problem size: 1000) . . .
+Minimum : 528303 RDTSC-cycles (0.001 par itération)
+Median  : 530563 RDTSC-cycles (0.001 par itération)
+Maximum : 964362 RDTSC-cycles (0.001 par itération)
+Good Stability : 0.43 %
+Build kernel gpu_omp . . .
+src/tab.c:
+src/rdtsc.c:
+src/print_measure.c:
+src/time_measure.c:
+./src/kernel/kernel_device_omp.c:
+kernel:
+      9, #omp target teams distribute parallel for simd
+          9, Generating "nvkernel_kernel_F1L9_2" GPU kernel
+         11, Loop parallelized across teams and threads(128), schedule(static)
+./src/bench/driver_device_omp.c:
+Measure kernel gpu_omp (problem size: 1000) . . .
+Minimum : 4.56468e+06 RDTSC-cycles (0.005 par itération)
+Median  : 4.56916e+06 RDTSC-cycles (0.005 par itération)
+Maximum : 4.57035e+06 RDTSC-cycles (0.005 par itération)
+Good Stability : 0.10 %
+Build kernel cuda . . .
+Measure kernel cuda (problem size: 1000) . . .
+Minimum : 169909 RDTSC-cycles (0.014 par itération)
+Median  : 169969 RDTSC-cycles (0.014 par itération)
+Maximum : 170290 RDTSC-cycles (0.014 par itération)
+Good Stability : 0.04 %
+Measures finished
+Job Infos :
+                Name : launch.slurm
+                User : lsno2312
+           Partition : small
+              NNodes : 2
+               Nodes : turpancomp[0-1]
+               State : RUNNING
+              Submit : 2023-07-05T11:18:26
+               Start : 2023-07-05T11:18:26
+                 End : Unknown
+   Reserved walltime : 00:10:00
+       Used walltime : 00:00:58
+       Used CPU time : 00:00:00
+ % User Computation) : Unknown
+      % System (I/O) : Unknown
+        Mem reserved : 1008G
+        Max Mem used : Unknown
+      Max Disk Write : Unknown
+       Max Disk Read : Unknown
+  Energy consumption : 0W.h
+
+Debug Infos :
+           BatchHost : turpancomp0
+             Command : /users/m23012/lsno2312/gpumm/launch.slurm measure 1000 cpu_omp gpu_omp cuda
+              StdOut : /users/m23012/lsno2312/gpumm/slurm-8462.out
+              StdErr : /users/m23012/lsno2312/gpumm/slurm-8462.out
+             WorkDir : /users/m23012/lsno2312/gpumm
