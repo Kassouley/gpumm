@@ -68,14 +68,14 @@
         {
             "10" : {"warmup": 100, "rep": 100},
             "100" : {"warmup": 10, "rep": 100},
-            "1000" : {"warmup": 3, "rep": 1},
+            "1000" : {"warmup": 3, "rep": 100},
             "default" : {"warmup": 1, "rep": 1}
         },
         "openacc_wo_dt": 
         {
             "10" : {"warmup": 100, "rep": 100},
             "100" : {"warmup": 10, "rep": 100},
-            "1000" : {"warmup": 3, "rep": 1},
+            "1000" : {"warmup": 3, "rep": 100},
             "default" : {"warmup": 1, "rep": 1}
         }
     },

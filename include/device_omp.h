@@ -6,6 +6,11 @@
 #define GPUMM_ALLOC(ptr, size) \
 {\
     ptr = omp_target_alloc(size, 0);\
+    if ( ptr == NULL ) \
+    { \
+        fprintf(stderr, "error: 'malloc ptr is null' at %s:%d\n", __FILE__, __LINE__); \
+        exit(EXIT_FAILURE);\
+    } \
 }
 
 #define GPUMM_MEMCPY_HtD(dst,src,size) \
