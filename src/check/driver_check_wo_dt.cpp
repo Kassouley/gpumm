@@ -39,6 +39,7 @@ int main(int argc, char **argv)
     double *b = (double*)malloc(size);
     double *c = (double*)malloc(size);
 
+    srand(0);
     init_tab2d_random(n, &b);
     init_tab2d_random(n, &c);
 

@@ -47,7 +47,7 @@
         {
             "10" : {"warmup": 100, "rep": 100},
             "100" : {"warmup": 10, "rep": 100},
-            "1000" : {"warmup": 10, "rep": 100},
+            "1000" : {"warmup": 1000, "rep": 1000},
             "default" : {"warmup": 1, "rep": 1}
         },
         "cublas": 
@@ -61,7 +61,7 @@
         {
             "10" : {"warmup": 100, "rep": 100},
             "100" : {"warmup": 10, "rep": 100},
-            "1000" : {"warmup": 100, "rep": 100},
+            "1000" : {"warmup": 1000, "rep": 1000},
             "default" : {"warmup": 1, "rep": 1}
         },
         "openacc": 

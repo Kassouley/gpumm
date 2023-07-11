@@ -1,6 +1,8 @@
 #ifndef DEVICE_OMP_H
 #define DEVICE_OMP_H
 
+#include<stdio.h>
+#include<stdlib.h>
 #include <omp.h>
 
 #define GPUMM_ALLOC(ptr, size) \

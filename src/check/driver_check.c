@@ -27,10 +27,13 @@ int main(int argc, char **argv)
             strcpy(file_name, argv[2]);
     }
     
-    double *a = (double*)malloc(n * n * sizeof(double));
-    double *b = (double*)malloc(n * n * sizeof(double));
-    double *c = (double*)malloc(n * n * sizeof(double));
+    int size = n * n * sizeof(double);
 
+    double *a = (double*)malloc(size);
+    double *b = (double*)malloc(size);
+    double *c = (double*)malloc(size);
+
+    srand(0);
     init_tab2d_random(n, &b);
     init_tab2d_random(n, &c);
 

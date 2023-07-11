@@ -40,7 +40,7 @@ else ifneq ($(filter $(KERNEL), GPU_OMP GPU_OMP_WO_DT),)
 		OPT_FLAGS=-fopenmp -mp=gpu -Minfo=mp
 	endif
 else ifneq ($(filter $(KERNEL), OPENACC OPENACC_WO_DT),)
-	OPT_FLAGS=-acc -acc=gpu -gpu=cc80 -Minfo=accel 
+	OPT_FLAGS=-acc -Minfo=accel 
 else ifneq ($(filter $(KERNEL), CUDA CUDA_WO_DT CUBLAS CUBLAS_WO_DT),)
 	OPT_FLAGS=-gencode=arch=compute_52,code=sm_52 \
   			  -gencode=arch=compute_60,code=sm_60 \
@@ -50,8 +50,6 @@ else ifneq ($(filter $(KERNEL), CUDA CUDA_WO_DT CUBLAS CUBLAS_WO_DT),)
   			  -gencode=arch=compute_80,code=sm_80 \
   			  -gencode=arch=compute_80,code=compute_80
 endif
-
-# ------------------- SRC ------------------- #
 
 # ------------------- SRC ------------------- #
 
@@ -119,7 +117,7 @@ measure: src/tab.c src/rdtsc.c src/print_measure.c src/time_measure.c
 	$(CC) -o $@ $^ $(SRC_KERNEL) $(SRC_DRIVER) $(CFLAGS) $(CMEASURE) $(LFLAGS) $(OPT_FLAGS)
 
 calibrate: $(SRC_COMMON) src/driver_calib.c
-	$(CC) -o $@ $^ -D $(KERNEL) $(CFLAGS) $(LFLAGS) $(OPT_FLAGS)
+	$(CC) -o $@ $^ $(SRC_KERNEL) $(SRC_DRIVER) $(CFLAGS) $(CMEASURE) $(LFLAGS) $(OPT_FLAGS)
 	
 # measure_src:
 	
