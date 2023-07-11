@@ -1,3 +1,4 @@
-graphs/
-output/
+graphs/*
+output/*
 slurm*
+*.o

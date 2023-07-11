@@ -37,7 +37,7 @@ def main() :
 
     ax2 = ax1.twinx()
     ax1.bar(label, median)
-    ax1.set_ylabel('RDTSC-cycles median')
+    ax1.set_ylabel(f'{sys.argv[4]} median')
     ax2.plot(stability, color='y')
     ax2.set_ylabel('Stability')
     ax2.yaxis.set_major_formatter(ticker.PercentFormatter())

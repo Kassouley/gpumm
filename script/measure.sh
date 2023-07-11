@@ -113,7 +113,8 @@ output="> /dev/null"
 force=0
 all=0
 plot=0
-clock="RTDSC"
+clock="RDTSC"
+clock_label="RDTSC-cycles"
 plot_file="$WORKDIR/graphs/graph_$(date +%F-%T).png"
 save=0
 save_file="$WORKDIR/output/measure_$(date +%F-%T).out"
@@ -133,7 +134,7 @@ while true ; do
         -a|--all) kernel_to_measure=${kernel_list[@]} ; shift ;;
         -f|--force) force=1 ; shift ;;
         -v|--verbose) verbose=1 ; shift ;;
-        -m|--millisecond) clock="MS" ; shift ;;
+        -m|--millisecond) clock="MS" ; clock_label="Time (ms)"; shift ;;
         -s|--save) 
             case "$2" in
                 "") save=1; shift 2 ;;
@@ -171,7 +172,7 @@ kernel_to_measure=`echo "$kernel_to_measure" | tr '[:upper:]' '[:lower:]'`
 ############################################################
 # SUMMARY OF THE RUN                                       #
 ############################################################
-echo -n "Summary measure ($clock) on $data_size x $data_size matrix on $GPU GPU"
+echo -n "Summary measure ($clock_label) on $data_size x $data_size matrix on $GPU GPU"
 if [ $verbose == 1 ]; then
   output=""
   echo -n " (with verbose mode)"
@@ -216,9 +217,9 @@ echo "Measures finished"
 
 eval make clean $output
 
-if [ $plot == 1 ] && [ $clock == "RTDSC" ]; then
+if [ $plot == 1 ]; then
   echo "Génération du graphique . . ."
-  python3 ./python/generate_graph.py $data_size $WORKDIR/output/measure_tmp.out $plot_file
+  python3 ./python/generate_graph.py $data_size $WORKDIR/output/measure_tmp.out $plot_file $clock_label
   echo "Graphique créé dans le répetoire $WORKDIR/graph/"
 fi
 
