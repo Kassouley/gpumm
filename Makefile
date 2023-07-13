@@ -58,6 +58,7 @@ SRC_COMMON=src/tab.c
 KERNEL_DIR=./src/kernel
 BENCH_DIR=./src/bench
 CHECK_DIR=./src/check
+CALIB_DIR=./src/calibrate
 
 IS_KERNEL_IN_C := $(filter $(KERNEL), BASIS CPU_OMP CBLAS GPU_OMP OPENACC)
 IS_KERNEL_IN_C_WO_DT := $(filter $(KERNEL), GPU_OMP_WO_DT OPENACC_WO_DT)
@@ -82,6 +83,16 @@ else ifneq ($(IS_KERNEL_IN_CPP),)
 	SRC_DRIVER=$(BENCH_DIR)/driver_measure.cpp
 else ifneq ($(IS_KERNEL_IN_CPP_WO_DT),)
 	SRC_DRIVER=$(BENCH_DIR)/driver_measure_wo_dt.cpp
+endif
+
+ifneq ($(IS_KERNEL_IN_C),)
+	SRC_CALIB=$(CALIB_DIR)/driver_calib.c
+else ifneq ($(IS_KERNEL_IN_C_WO_DT),)
+	SRC_CALIB=$(CALIB_DIR)/driver_calib_wo_dt.c
+else ifneq ($(IS_KERNEL_IN_CPP),)
+	SRC_CALIB=$(CALIB_DIR)/driver_calib.cpp
+else ifneq ($(IS_KERNEL_IN_CPP_WO_DT),)
+	SRC_CALIB=$(CALIB_DIR)/driver_calib_wo_dt.cpp
 endif
 
 IS_KERNEL_CPU := $(filter $(KERNEL), BASIS CPU_OMP CBLAS)
@@ -116,8 +127,8 @@ check: src/tab.c
 measure: src/tab.c src/rdtsc.c src/print_measure.c src/time_measure.c 
 	$(CC) -o $@ $^ $(SRC_KERNEL) $(SRC_DRIVER) $(CFLAGS) $(CMEASURE) $(LFLAGS) $(OPT_FLAGS)
 
-calibrate: $(SRC_COMMON) src/driver_calib.c
-	$(CC) -o $@ $^ $(SRC_KERNEL) $(SRC_DRIVER) $(CFLAGS) $(CMEASURE) $(LFLAGS) $(OPT_FLAGS)
+calibrate: src/tab.c src/rdtsc.c src/print_calib.c
+	$(CC) -o $@ $^ $(SRC_KERNEL) $(SRC_CALIB) $(CFLAGS) $(CMEASURE) $(LFLAGS) $(OPT_FLAGS)
 	
 # measure_src:
 	

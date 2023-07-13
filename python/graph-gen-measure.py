@@ -30,11 +30,6 @@ def main() :
     label, minimum, median, stability, median_per_it = read_data(file)
 
     fig, ax1 = plt.subplots(1,1)
-
-    # formatter = ticker.ScalarFormatter()
-    # formatter.set_scientific(False)
-    # ax1.yaxis.set_major_formatter(formatter)
-
     ax2 = ax1.twinx()
     ax1.bar(label, median)
     ax1.set_ylabel(f'{sys.argv[4]} median')
@@ -45,7 +40,6 @@ def main() :
     ax1.set_xticklabels(label,rotation=30, ha='right')
     ax1.set_title(f"Kernel Performances for a {sys.argv[1]}x{sys.argv[1]} matrix")
     plt.tight_layout()
-    date = f"{dt.datetime.now()}".replace(' ', '-', 1)
     plt.savefig(sys.argv[3])
 
 if __name__ == '__main__':

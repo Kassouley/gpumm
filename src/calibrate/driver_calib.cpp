@@ -1,16 +1,21 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
-#include <string.h>
 #include <unistd.h>
+#include <string.h>
 #include "kernel.h"
+extern "C" {
 #include "tab.h"
 #include "print_calib.h"
+extern uint64_t rdtsc ();
+}
 
 #define NB_META 31
 #define OUTOUT_FILE "output_calibrate.txt"
 
-extern uint64_t rdtsc ();
+#ifdef GPUMM_HANDLE_ENABLE
+GPUMM_BLAS_HANDLE handle;
+#endif
 
 int main(int argc, char **argv)
 {
@@ -49,6 +54,10 @@ int main(int argc, char **argv)
     init_tab2d_random(n, &b);
     init_tab2d_random(n, &c);
     
+    #ifdef GPUMM_HANDLE_ENABLE
+    GPUMM_HANDLE_CREATE(handle);
+    #endif
+
     printf("Calibration . . . 0%%");
     for (unsigned int m = 0; m < NB_META; m++)
     {
@@ -63,6 +72,11 @@ int main(int argc, char **argv)
         printf("\rCalibration . . . %d%%",(m*100)/(NB_META-1));
         fflush(stdout);
     }
+
+    #ifdef GPUMM_HANDLE_ENABLE
+    GPUMM_HANDLE_DESTROY(handle);
+    #endif
+
     free(a);
     free(b);
     free(c);

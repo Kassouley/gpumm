@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 from matplotlib import ticker
+import numpy as np
 import sys
 import datetime as dt
 
@@ -15,7 +16,7 @@ def read_data(file):
         line = line.replace('\n', '')
         line = line.replace(' ', '')
         line = line.split(sep="|")
-        step.append(line[0])
+        step.append(int(line[0]))
         median.append(int(line[1]))
         stability.append(float(line[2]))
     return step, median, stability
@@ -32,16 +33,16 @@ def main() :
     # ax1.yaxis.set_major_formatter(formatter)
 
     ax2 = ax1.twinx()
-    ax1.bar(label, median)
+    ax1.plot(median, color='b')
     ax1.set_ylabel(f'{sys.argv[4]} median')
     ax2.plot(stability, color='y')
     ax2.set_ylabel('Stability')
     ax2.yaxis.set_major_formatter(ticker.PercentFormatter())
-    ax1.set_xticks(label)
-    ax1.set_xticklabels(label,rotation=30, ha='right')
-    ax1.set_title(f"Kernel Performances for a {sys.argv[1]}x{sys.argv[1]} matrix")
+    plt.xlabel("Steps")
+    ax1.xaxis.set_major_locator(ticker.MaxNLocator(integer=True))
+    ax1.set_ylim(ymin=0)
+    ax1.set_title(f"Warmup calibration for a {sys.argv[1]}x{sys.argv[1]} matrix")
     plt.tight_layout()
-    date = f"{dt.datetime.now()}".replace(' ', '-', 1)
     plt.savefig(sys.argv[3])
 
 if __name__ == '__main__':

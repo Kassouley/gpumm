@@ -1,16 +1,21 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
-#include <string.h>
 #include <unistd.h>
+#include <string.h>
 #include "kernel.h"
+extern "C" {
 #include "tab.h"
 #include "print_calib.h"
+extern uint64_t rdtsc ();
+}
 
 #define NB_META 31
 #define OUTOUT_FILE "output_calibrate.txt"
 
-extern uint64_t rdtsc ();
+#ifdef GPUMM_HANDLE_ENABLE
+GPUMM_BLAS_HANDLE handle;
+#endif
 
 int main(int argc, char **argv)
 {
@@ -48,14 +53,28 @@ int main(int argc, char **argv)
     srand(0);
     init_tab2d_random(n, &b);
     init_tab2d_random(n, &c);
-    
+    double* d_a;
+    double* d_b;
+    double* d_c;
+
+	GPUMM_ALLOC(d_a, size);
+	GPUMM_ALLOC(d_b, size);
+	GPUMM_ALLOC(d_c, size);
+
+    GPUMM_MEMCPY_HtD(d_b, b, size);
+    GPUMM_MEMCPY_HtD(d_c, c, size);
+
+    #ifdef GPUMM_HANDLE_ENABLE
+    GPUMM_HANDLE_CREATE(handle);
+    #endif
+
     printf("Calibration . . . 0%%");
     for (unsigned int m = 0; m < NB_META; m++)
     {
         for (unsigned int k = 0; k < repm; k++)
         {
             const uint64_t t1 = rdtsc();
-            kernel(n, a, b, c);
+            kernel(n, d_a, d_b, d_c);
             const uint64_t t2 = rdtsc();
             tdiff[k][m] = t2 - t1;
         }
@@ -63,6 +82,17 @@ int main(int argc, char **argv)
         printf("\rCalibration . . . %d%%",(m*100)/(NB_META-1));
         fflush(stdout);
     }
+
+    #ifdef GPUMM_HANDLE_ENABLE
+    GPUMM_HANDLE_DESTROY(handle);
+    #endif 
+
+    GPUMM_MEMCPY_DtH(a, d_a, size);
+
+    GPUMM_FREE(d_a);
+    GPUMM_FREE(d_b);
+    GPUMM_FREE(d_c);
+
     free(a);
     free(b);
     free(c);

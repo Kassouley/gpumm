@@ -33,10 +33,10 @@ int main(int argc, char **argv)
             strcpy(file_name, argv[3]);
     }
 
-    uint64_t **tdiff = (uint64_t**)malloc( repm * sizeof(tdiff[0][0]));
+    uint64_t **tdiff = malloc( repm * sizeof(tdiff[0][0]));
     for(unsigned int k = 0 ; k < repm ; k++)
     {
-        tdiff[k] = (uint64_t*)malloc( NB_META * sizeof(tdiff[0]));
+        tdiff[k] = malloc( NB_META * sizeof(tdiff[0]));
     }
 
     int size = n * n * sizeof(double);
@@ -48,14 +48,24 @@ int main(int argc, char **argv)
     srand(0);
     init_tab2d_random(n, &b);
     init_tab2d_random(n, &c);
-    
+    double* d_a;
+    double* d_b;
+    double* d_c;
+
+	GPUMM_ALLOC(d_a, size);
+	GPUMM_ALLOC(d_b, size);
+	GPUMM_ALLOC(d_c, size);
+
+    GPUMM_MEMCPY_HtD(d_b, b, size);
+    GPUMM_MEMCPY_HtD(d_c, c, size);
+
     printf("Calibration . . . 0%%");
     for (unsigned int m = 0; m < NB_META; m++)
     {
         for (unsigned int k = 0; k < repm; k++)
         {
             const uint64_t t1 = rdtsc();
-            kernel(n, a, b, c);
+            kernel(n, d_a, d_b, d_c);
             const uint64_t t2 = rdtsc();
             tdiff[k][m] = t2 - t1;
         }
@@ -63,6 +73,13 @@ int main(int argc, char **argv)
         printf("\rCalibration . . . %d%%",(m*100)/(NB_META-1));
         fflush(stdout);
     }
+
+    GPUMM_MEMCPY_DtH(a, d_a, size);
+
+    GPUMM_FREE(d_a);
+    GPUMM_FREE(d_b);
+    GPUMM_FREE(d_c);
+
     free(a);
     free(b);
     free(c);
@@ -70,5 +87,3 @@ int main(int argc, char **argv)
     print_calib(repm, tdiff, file_name);
     return EXIT_SUCCESS;
 }
-
-
