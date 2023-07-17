@@ -1,4 +1,6 @@
 graphs/*
 output/*
+!graphs/.gitkeep
+!output/.gitkeep
 slurm*
 *.o
