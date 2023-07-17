@@ -125,8 +125,6 @@ TEMP=$(getopt -o hfavms::p:: \
 
 eval set -- "$TEMP"
 
-echo $TEMP
-
 if [ $? != 0 ]; then usage ; fi
 
 while true ; do
@@ -146,7 +144,8 @@ while true ; do
                 *)  plot=1; plot_file="$2" ; shift 2 ;;
             esac ;;
         --) shift ; break ;;
-        -h|--help|*) echo "No option $1."; usage ;;
+        -h|--help) usage ;;
+        *) echo "No option $1."; usage ;;
     esac
 done
 

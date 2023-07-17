@@ -110,7 +110,7 @@ else ifneq ($(IS_KERNEL_OMP),)
 else ifneq ($(IS_KERNEL_ACC),)
 	SRC_KERNEL=$(KERNEL_DIR)/kernel_device_acc.c
 else ifneq ($(IS_KERNEL_HIP),)
-	SRC_KERNEL=$(KERNEL_DIR)/test.cpp
+	SRC_KERNEL=$(KERNEL_DIR)/kernel_device_hip.cpp
 else ifneq ($(IS_KERNEL_ROCBLAS),)
 	SRC_KERNEL=$(KERNEL_DIR)/kernel_device_rocblas.cpp
 else ifneq ($(IS_KERNEL_CUDA),)
