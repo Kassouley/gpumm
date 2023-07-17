@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "kernel.h"
+#include "tab.h"
 
 #define OUTOUT_FILE "output_check.txt"
 

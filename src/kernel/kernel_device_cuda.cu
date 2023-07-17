@@ -42,6 +42,7 @@ void kernel (unsigned int n, double* a, const double* b, const double* c)
     double* d_a;
     double* d_b;
     double* d_c;
+    
 	CHECK(cudaMalloc(&d_a, size));
     CHECK(cudaMalloc(&d_b, size));
     CHECK(cudaMalloc(&d_c, size));

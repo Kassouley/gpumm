@@ -17,9 +17,11 @@ Advice : use the script in the 'script/' folder
 No particulary installation needed.
 Just build with :
 ```bash
-make measure KERNEL=[kernel_name] CLOCK=[RDTSC|MS] GPU=[NVIDIA|AMD]
-make check KERNEL=[kernel_name] GPU=[NVIDIA|AMD]
+make measure KERNEL=[KERNEL_NAME] CLOCK=[RDTSC|MS] GPU=[NVIDIA|AMD]
+make check KERNEL=[KERNEL_NAME] GPU=[NVIDIA|AMD]
 ```
+
+KERNEL_NAME should be in uppercase.
 
 Then run with :
 ```bash

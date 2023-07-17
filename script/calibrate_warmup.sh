@@ -10,7 +10,7 @@ usage()
   options:\n
     \t-h,--help : print help\n
     \t-a,--all : calibrate all kernel\n
-    \t-n,--nbstep=XX : number of step for the calibration (default value = 100)
+    \t-n,--nbstep=XX : number of step for the calibration (default value = $nb_step)
     \t-p,--plot: create a png plot with the results in png file in  ./graphs/calibrate_warmup_SIZE_KERNEL_DATE.png)\n
     \t-v,--verbose : print all make output\n
     \t-f,--force : do not ask for starting the measure\n
@@ -83,7 +83,7 @@ calibrate_kernel()
 generate_plot()
 {
   if [ $plot == 1 ]; then
-    plot_file="$WORKDIR/graphs/warmup/calibrate_warmup_"$1"_"$2"_$(date +%F-%T).png"
+    plot_file="$WORKDIR/graphs/warmup/warmup_"$2"_"$1"_$(date +%F-%T).png"
     echo "Génération du graphique . . ."
     python3 ./python/graph-gen-warmup.py $1 $output_file $plot_file $clock_label
     echo "Graphique créé dans le fichier $plot_file"
@@ -119,7 +119,7 @@ fi
 kernel_list=( $(jq ".$GPU|keys_unsorted[]" json/measure_config.json -r) )
 kernel_to_calibrate=()
 data_size=()
-nb_step=100
+nb_step=20
 verbose=0
 output="> /dev/null"
 force=0
@@ -138,13 +138,14 @@ if [ $? != 0 ]; then usage ; fi
 
 while true ; do
     case "$1" in
-        -a|--all) kernel_to_calibrate=${kernel_list[@]} ; shift ;;
+        -a|--all) kernel_to_calibrate=(${kernel_list[@]}) ; shift ;;
         -f|--force) force=1 ; shift ;;
         -v|--verbose) verbose=1 ; shift ;;
         -p|--plot) plot=1; shift ;;
         -n|--nbstep) nb_step=$2 ; shift 2 ;;
         --) shift ; break ;;
-        -h|--help|*) echo "No option $1."; usage ;;
+        -h|--help) usage ;;
+        *) echo "No option $1."; usage ;;
     esac
 done
 
@@ -177,7 +178,7 @@ if [ $verbose == 1 ]; then
   output=""
   echo -n " (with verbose mode)"
 fi 
-echo -e "\nKernel to calibrate : ${kernel_to_calibrate[*]}"
+echo -e "\nKernel to calibrate (${#kernel_to_calibrate[*]}) : ${kernel_to_calibrate[*]}"
 echo -e "Problem size : ${data_size[*]}"
 echo -e "Step number: $nb_step"
 if [ $plot == 1 ]; then
@@ -185,7 +186,7 @@ if [ $plot == 1 ]; then
 else
   echo "Plot will NOT be generated"
 fi 
-duration=$((${#kernel_to_calibrate[@]} * 2 * ${#data_size[@]}));
+duration=$((${#kernel_to_calibrate[@]} * 3 * ${#data_size[@]}));
 echo "Approximately $duration minutes long"
 
 if [ $force == 0 ]; then
