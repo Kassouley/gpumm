@@ -78,13 +78,12 @@ int main(int argc, char* argv[])
         const uint64_t t2 = measure_clock();
 
         tdiff[m] = t2 - t1;
+        GPUMM_MEMCPY_DtH(a, d_a, size);
     }
     
     #ifdef GPUMM_HANDLE_ENABLE
     GPUMM_HANDLE_DESTROY(handle);
     #endif     
-
-    GPUMM_MEMCPY_DtH(a, d_a, size);
 
     GPUMM_FREE(d_a);
     GPUMM_FREE(d_b);

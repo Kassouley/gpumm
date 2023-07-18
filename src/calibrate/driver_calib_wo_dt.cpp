@@ -78,6 +78,7 @@ int main(int argc, char **argv)
             const uint64_t t2 = rdtsc();
             tdiff[k][m] = t2 - t1;
         }
+        GPUMM_MEMCPY_DtH(a, d_a, size);
         sleep(3);
         printf("\rCalibration . . . %d%%",(m*100)/(NB_META-1));
         fflush(stdout);
