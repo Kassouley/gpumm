@@ -25,9 +25,9 @@ void print_measure(int n, unsigned int nrep, uint64_t tdiff[NB_META])
     const unsigned long nbitr = (unsigned long)n*(unsigned long)n*(unsigned long)n*(unsigned long)nrep;
 
     qsort (tdiff, NB_META, sizeof tdiff[0], cmp_uint64);
-    printf("Minimum : %.6g %s (%.2g par itération)\n", (float)tdiff[0]/nrep        , MEASURE_UNITE, (float)tdiff[0]/nbitr);
-    printf("Median  : %.6g %s (%.2g par itération)\n", (float)tdiff[NB_META/2]/nrep, MEASURE_UNITE, (float)tdiff[NB_META/2]/nbitr);
-    printf("Maximum : %.6g %s (%.2g par itération)\n", (float)tdiff[NB_META-1]/nrep, MEASURE_UNITE, (float)tdiff[NB_META-1]/nbitr);
+    printf("Minimum : %.6g %s (%.3g par itération)\n", (float)tdiff[0]/(float)nrep        , MEASURE_UNITE, (float)tdiff[0]/(float)nbitr);
+    printf("Median  : %.6g %s (%.3g par itération)\n", (float)tdiff[NB_META/2]/(float)nrep, MEASURE_UNITE, (float)tdiff[NB_META/2]/(float)nbitr);
+    printf("Maximum : %.6g %s (%.3g par itération)\n", (float)tdiff[NB_META-1]/(float)nrep, MEASURE_UNITE, (float)tdiff[NB_META-1]/(float)nbitr);
     
     const float stabilite = (tdiff[NB_META/2] - tdiff[0]) * 100.0f / tdiff[0];
     

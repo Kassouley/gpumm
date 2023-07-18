@@ -6,8 +6,8 @@
 #SBATCH --ntasks-per-node=80
 #SBATCH --time=00:10:00
 
-# workdir=$PWD/slurm/${SLURM_JOBID}
-# mkdir ${workdir}
+workdir=$PWD/slurm/${SLURM_JOBID}
+mkdir ${workdir}
 
 driver=$1
 shift 1
@@ -21,8 +21,8 @@ module load openblas/gnu/0.3.21
 echo "Chargement des modules terminés"
 
 # nsys profile -o ${workdir}/${SLURM_JOBID}-rep ./script/$driver.sh $@
-eval ./script/$driver.sh $@
-# nsys stats ${workdir}/${SLURM_JOBID}-rep.nsys-rep
+eval nsys profile -o ${workdir}/${SLURM_JOBID}-rep ./script/$driver.sh $@
+nsys stats ${workdir}/${SLURM_JOBID}-rep.nsys-rep
 
 sleep 10
 jobinfo "${SLURM_JOBID}"
