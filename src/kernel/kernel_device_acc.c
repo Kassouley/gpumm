@@ -12,10 +12,10 @@ void kernel (unsigned int n, double* a, const double* b, const double* c)
         // #pragma acc loop independent gang vector
         # pragma acc region
         {
-            # pragma acc parallel loop independent vector(32) 
+            # pragma acc loop independent vector(32) 
             for(unsigned int i = 0; i < n; i++)
             {
-                # pragma acc parallel loop independent vector(32) 
+                # pragma acc loop independent vector(32) 
                 for(unsigned int j = 0; j < n; j++)
                 {
                     a[i*n+j] = 0;
@@ -37,10 +37,10 @@ void kernel (unsigned int n, double* a, const double* b, const double* c)
     {
         #pragma acc region
         {
-            #pragma acc parallel loop independent vector(32) 
+            #pragma acc loop independent vector(32) 
             for(unsigned int i = 0; i < n; i++)
             {
-                #pragma acc parallel loop independent vector(32) 
+                #pragma acc loop independent vector(32) 
                 for(unsigned int j = 0; j < n; j++)
                 {
                     a[i*n+j] = 0;
