@@ -6,18 +6,16 @@
 #ifdef OPENACC
 void kernel (unsigned int n, double* a, const double* b, const double* c)
 {
-    // #pragma acc data copyin(b[0:n*n], c[0:n*n]) copyout(a[0:n*n])
-    // {
-        // #pragma acc kernels
-        // #pragma acc loop independent gang vector
     #pragma acc data copyin(b[0:n*n], c[0:n*n]) copyout(a[0:n*n])
     {
+        // #pragma acc kernels
+        // #pragma acc loop independent gang vector
         # pragma acc region
         {
-            # pragma acc loop independent vector(32) 
+            # pragma acc parallel loop independent vector(32) 
             for(unsigned int i = 0; i < n; i++)
             {
-                # pragma acc loop independent vector(32) 
+                # pragma acc parallel loop independent vector(32) 
                 for(unsigned int j = 0; j < n; j++)
                 {
                     a[i*n+j] = 0;
@@ -39,10 +37,10 @@ void kernel (unsigned int n, double* a, const double* b, const double* c)
     {
         #pragma acc region
         {
-            #pragma acc loop independent vector(32) 
+            #pragma acc parallel loop independent vector(32) 
             for(unsigned int i = 0; i < n; i++)
             {
-                #pragma acc loop independent vector(32) 
+                #pragma acc parallel loop independent vector(32) 
                 for(unsigned int j = 0; j < n; j++)
                 {
                     a[i*n+j] = 0;

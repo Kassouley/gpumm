@@ -37,10 +37,18 @@ else ifneq ($(filter $(KERNEL), GPU_OMP GPU_OMP_WO_DT),)
 		-fopenmp-targets=amdgcn-amd-amdhsa \
 		-Xopenmp-target=amdgcn-amd-amdhsa -march=gfx1030
 	else ifeq ($(GPU), NVIDIA)
-		OPT_FLAGS=-fopenmp -mp=gpu -Minfo=mp
+		ifeq ($(CC),gcc)
+			OPT_FLAGS=-fopenmp
+		else
+			OPT_FLAGS=-fopenmp -mp=gpu -Minfo=mp
+		endif
 	endif
 else ifneq ($(filter $(KERNEL), OPENACC OPENACC_WO_DT),)
-	OPT_FLAGS=-acc -Minfo=accel 
+	ifeq ($(CC),gcc)
+		OPT_FLAGS=-fopenacc
+	else
+		OPT_FLAGS=-acc -Minfo=accel 
+	endif
 else ifneq ($(filter $(KERNEL), CUDA CUDA_WO_DT CUBLAS CUBLAS_WO_DT),)
 	OPT_FLAGS=-gencode=arch=compute_52,code=sm_52 \
   			  -gencode=arch=compute_60,code=sm_60 \

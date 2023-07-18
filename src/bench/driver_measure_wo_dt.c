@@ -68,11 +68,10 @@ int main(int argc, char* argv[])
             kernel(n, d_a, d_b, d_c);
         }
         const uint64_t t2 = measure_clock();
-
+        
         tdiff[m] = t2 - t1;
+        GPUMM_MEMCPY_DtH(a, d_a, size);
     }
-
-    GPUMM_MEMCPY_DtH(a, d_a, size);
 
     GPUMM_FREE(d_a);
     GPUMM_FREE(d_b);

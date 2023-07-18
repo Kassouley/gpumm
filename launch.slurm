@@ -6,8 +6,8 @@
 #SBATCH --ntasks-per-node=80
 #SBATCH --time=00:10:00
 
-# workdir=$PWD/slurm/${SLURM_JOBID}
-# mkdir ${workdir}
+workdir=$PWD/slurm/${SLURM_JOBID}
+mkdir ${workdir}
 
 driver=$1
 shift 1
@@ -17,12 +17,15 @@ module purge
 module load nvidia
 module load nvhpc/23.1
 module load python-tools/3.10.9
-module load openblas/gnu/0.3.21
+# module load gnu/12.2.0
+# module load openblas/gnu/0.3.21
 echo "Chargement des modules terminés"
+echo |cpp -fopenacc -dM |grep -i open
+gcc --version
 
 # nsys profile -o ${workdir}/${SLURM_JOBID}-rep ./script/$driver.sh $@
-eval ./script/$driver.sh $@
-# nsys stats ${workdir}/${SLURM_JOBID}-rep.nsys-rep
+eval nsys profile -o ${workdir}/${SLURM_JOBID}-rep ./script/$driver.sh $@
+nsys stats ${workdir}/${SLURM_JOBID}-rep.nsys-rep
 
 sleep 10
 jobinfo "${SLURM_JOBID}"
