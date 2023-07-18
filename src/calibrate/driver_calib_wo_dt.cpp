@@ -87,9 +87,7 @@ int main(int argc, char **argv)
     #ifdef GPUMM_HANDLE_ENABLE
     GPUMM_HANDLE_DESTROY(handle);
     #endif 
-
-    GPUMM_MEMCPY_DtH(a, d_a, size);
-
+    
     GPUMM_FREE(d_a);
     GPUMM_FREE(d_b);
     GPUMM_FREE(d_c);
