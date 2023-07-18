@@ -1,6 +1,8 @@
 graphs/*
 output/*
 !graphs/.gitkeep
+!graphs/warmup/.gitkeep
 !output/.gitkeep
 slurm*
+save/*
 *.o

@@ -10,7 +10,7 @@ usage()
   options:\n
     \t-h,--help : print help\n
     \t-a,--all : calibrate all kernel\n
-    \t-n,--nbstep=XX : number of step for the calibration (default value = $nb_step)
+    \t-n,--nbstep=XX : number of step for the calibration (default value = $nb_step)\n
     \t-p,--plot: create a png plot with the results in png file in  ./graphs/calibrate_warmup_SIZE_KERNEL_DATE.png)\n
     \t-v,--verbose : print all make output\n
     \t-f,--force : do not ask for starting the measure\n
