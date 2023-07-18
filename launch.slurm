@@ -4,7 +4,7 @@
 #SBATCH --gres=gpu:2 
 #SBATCH -p small
 #SBATCH --ntasks-per-node=80
-#SBATCH --time=00:10:00
+#SBATCH --time=03:00:00
 
 workdir=$PWD/slurm/${SLURM_JOBID}
 mkdir ${workdir}

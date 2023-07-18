@@ -21,7 +21,6 @@ int main(int argc, char **argv)
 {
     unsigned int n, repm;
     char* file_name = NULL;
-    FILE * output = NULL;
     if (argc != 3 && argc != 4) 
     {
         fprintf (stderr, "Usage: %s <problem size> <nb repeat> [file name]\n", argv[0]);
