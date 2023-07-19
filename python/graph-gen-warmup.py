@@ -38,7 +38,7 @@ def main() :
     ax1.plot(0, color='y', label="(med-min)/min")
     ax2.plot(stability, color='y', label="(med-min)/min")
     ax2.set_ylabel('Stability')
-    ax1.legend()
+    ax1.legend(loc=1)
     ax2.yaxis.set_major_formatter(ticker.PercentFormatter())
     ax1.set_xlabel("Steps")
     ax1.xaxis.set_major_locator(ticker.MaxNLocator(integer=True))

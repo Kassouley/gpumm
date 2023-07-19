@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH -N 2
 #SBATCH -n 160
-#SBATCH --gres=gpu:2 
+#SBATCH --gres=gpu:1
 #SBATCH -p small
 #SBATCH --ntasks-per-node=80
 #SBATCH --time=03:00:00
