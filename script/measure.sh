@@ -65,6 +65,7 @@ measure_kernel()
   else
     data_size=$2
   fi
+  build_kernel $1
   echo -e "Measure kernel $1 (problem size: $2) . . ."
   config="$WORKDIR/json/measure_config.json"
   key=".$GPU.$1[\"$data_size\"]"
@@ -80,7 +81,7 @@ build_kernel()
 {
   kernel=`echo "$1" | tr '[:lower:]' '[:upper:]'`
   echo -e -n "Build kernel $1 . . . "
-  eval make calibrate -B KERNEL=$kernel CLOCK=RDTSC GPU=$GPU $output
+  eval make measure -B KERNEL=$kernel CLOCK=$clock GPU=$GPU $output
   check_error "build failed"
   echo "Done"
 }
@@ -181,7 +182,7 @@ if [ $verbose == 1 ]; then
   output=""
   echo -n " (with verbose mode)"
 fi 
-echo -e "\nKernel to measure :$kernel_to_measure"
+echo -e "\nKernel to measure : $kernel_to_measure"
 if [ $plot == 1 ]; then
   echo "Plot will be generated in '$plot_file'"
 fi 
@@ -230,6 +231,7 @@ fi
 echo "---------------------"
 echo "Result Summary : "
 cat $WORKDIR/output/measure_tmp.out
+echo "---------------------"
 
 if [ $save == 1 ]; then
   mv $WORKDIR/output/measure_tmp.out $save_file
