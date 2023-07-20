@@ -17,21 +17,31 @@ Advice : use the script in the 'script/' folder
 No particulary installation needed.
 Just build with :
 ```bash
-make measure KERNEL=[KERNEL_NAME] CLOCK=[RDTSC|MS] GPU=[NVIDIA|AMD]
-make check KERNEL=[KERNEL_NAME] GPU=[NVIDIA|AMD]
+make measure KERNEL=[KERNEL_NAME] CLOCK=[RDTSC|MS] GPU=[NVIDIA|AMD] CC=whateveruwant
+make check KERNEL=[KERNEL_NAME] GPU=[NVIDIA|AMD] CC=whateveruwant
+make calibrate KERNEL=[KERNEL_NAME] GPU=[NVIDIA|AMD] CC=whateveruwant
 ```
 
 KERNEL_NAME should be in uppercase.
 
+CLOCK is optional (MS by default)
+
+GPU is optional (AMD by default)
+
+CC is optional (AMD Clang on AMD and NVC on NVIDIA (NVCC for CUDA kernels) by default)
+
 Then run with :
 ```bash
-./measure {matrix_size} {n_warmup} {n_rep}
-./check {matrix_size} {output file}
+./measure <problem size> <nb warmup> <nb rep>
+./check <problem size> [file name]
+./calibrate <problem size> <nb step> [file name]
 ```
 
-- matrix_size is the size n of an n x n matrix
-- n_warmup is the number of warmup before starting the bench
-- n_rep is the number of repetitions to dampen the accuracy of the timer
+- problem size is the size n of an n x n matrix
+- nb warmup is the number of warmup before starting the bench
+- nb rep is the number of repetitions to dampen the accuracy of the timer
+- file name is an outfile
+- nb step is the number of step to calibrate the warmup
     
 ## Code Features
 
@@ -43,7 +53,8 @@ Then run with :
 - Benchmark on GPU using rocBLAS with and without the data transfer (on AMD)
 - Benchmark on GPU using CUDA with and without the data transfer (on NVIDIA)
 - Benchmark on GPU using cuBLAS with and without the data transfer (on NVIDIA)
-- Checker for all these benchmarks
+- Checker for all these kernels
+- Warmup calibration for all these kernels
 
 ## Script Features
 
@@ -59,9 +70,8 @@ check.sh :
 - Automatically compares kernels outputs with the basis kernel
 - Shows us the pourcentage of similarities between two kernel output
 
-calibrate.sh (TODO) :
-- Auto calibrate the number of warmup and repetition of the kernels in argument
-- Generate graphs about this calibration
+calibrate.sh :
+- Generate graphs on warmup calibration of the kernels in argument
 
 ### Python script
 
@@ -110,11 +120,27 @@ By using the script :
 ./script/measure.sh {options} [problem size] <kernels>
 ```
 
+Example :
+```bash
+./script/measure.sh -p BASIS hip rocblas_wo_dt 1000 -v
+```
+will run a 3 benchmark (RDTSC Cycles metric) of the kernel basis hip and rocblas_wo_dt for a 1000x1000 matrix in verbose and will generate a graph of the result
+
+```bash
+./script/measure.sh 100 -ma
+```
+will run all kernels (millisecond metric) for a 100x100 matrix
+
 Use the '-h' option for more information
 
 ```bash
 ./script/check.sh {options} [problem size] <kernels>
 ```
+```bash
+./script/check.sh 100 -a
+```
+will check all kernels for a 100x100 matrix and compare it with the basis kernel
+
 Use the '-h' option for more information
 
 ```
