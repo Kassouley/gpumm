@@ -65,10 +65,6 @@ measure_kernel()
   else
     data_size=$2
   fi
-  kernel=`echo "$1" | tr '[:lower:]' '[:upper:]'`
-  echo -e "Build kernel $1 . . ."
-  eval make measure -B KERNEL=$kernel CLOCK=$clock GPU=$GPU $output
-  check_error "build failed"
   echo -e "Measure kernel $1 (problem size: $2) . . ."
   config="$WORKDIR/json/measure_config.json"
   key=".$GPU.$1[\"$data_size\"]"
@@ -78,6 +74,15 @@ measure_kernel()
   eval echo "exec command : $cmd" $output
   eval $cmd
   check_error "run measure failed"
+}
+
+build_kernel()
+{
+  kernel=`echo "$1" | tr '[:lower:]' '[:upper:]'`
+  echo -e -n "Build kernel $1 . . . "
+  eval make calibrate -B KERNEL=$kernel CLOCK=RDTSC GPU=$GPU $output
+  check_error "build failed"
+  echo "Done"
 }
 
 ############################################################
@@ -217,10 +222,14 @@ echo "Measures finished"
 eval make clean $output
 
 if [ $plot == 1 ]; then
-  echo "Génération du graphique . . ."
+  echo "Graph generation . . ."
   python3 ./python/graph-gen-measure.py $data_size $WORKDIR/output/measure_tmp.out $plot_file $clock_label
-  echo "Graphique créé dans le répetoire $WORKDIR/graph/"
+  echo "Graph created in file $plot_file"
 fi
+
+echo "---------------------"
+echo "Result Summary : "
+cat $WORKDIR/output/measure_tmp.out
 
 if [ $save == 1 ]; then
   mv $WORKDIR/output/measure_tmp.out $save_file

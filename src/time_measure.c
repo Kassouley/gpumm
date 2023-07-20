@@ -8,11 +8,7 @@ uint64_t measure_clock()
 {
     struct timeval tv;
     gettimeofday(&tv,NULL);
-    return (((uint64_t)tv.tv_sec)*1000)+(tv.tv_usec/1000);
-    // struct timespec t;
-    // clock_gettime( CLOCK_REALTIME, &t );
-    // return t.tv_nsec;
-    
+    return (((uint64_t)tv.tv_sec)*1000)+((uint64_t)tv.tv_usec/1000);    
 }
 #else
 extern uint64_t rdtsc ();

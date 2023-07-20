@@ -47,7 +47,7 @@
         {
             "10" : {"warmup": 200, "rep": 100},
             "100" : {"warmup": 150, "rep": 100},
-            "1000" : {"warmup": 5, "rep": 10},
+            "1000" : {"warmup": 5, "rep": 100},
             "default" : {"warmup": 1, "rep": 1}
         },
         "cuda": 
@@ -61,7 +61,7 @@
         {
             "10" : {"warmup": 1500, "rep": 100},
             "100" : {"warmup": 700, "rep": 100},
-            "1000" : {"warmup": 500, "rep": 10},
+            "1000" : {"warmup": 500, "rep": 1000},
             "default" : {"warmup": 1, "rep": 1}
         },
         "cublas": 
@@ -75,7 +75,7 @@
         {
             "10" : {"warmup": 500, "rep": 100},
             "100" : {"warmup": 500, "rep": 100},
-            "1000" : {"warmup": 500, "rep": 10},
+            "1000" : {"warmup": 500, "rep": 1000},
             "default" : {"warmup": 1, "rep": 1}
         }
     },
@@ -111,37 +111,37 @@
         },
         "gpu_omp_wo_dt": 
         {
-            "10" : {"warmup": 600, "rep": 100},
-            "100" : {"warmup": 300, "rep": 100},
-            "1000" : {"warmup": 9, "rep": 10},
+            "10" : {"warmup": 600, "rep": 1000},
+            "100" : {"warmup": 300, "rep": 1000},
+            "1000" : {"warmup": 9, "rep": 1000},
             "default" : {"warmup": 1, "rep": 1}
         },
         "hip": 
         {
             "10" : {"warmup": 200, "rep": 100},
             "100" : {"warmup": 120, "rep": 100},
-            "1000" : {"warmup": 10, "rep": 10},
+            "1000" : {"warmup": 10, "rep": 100},
             "default" : {"warmup": 1, "rep": 1}
         },
         "hip_wo_dt": 
         {
-            "10" : {"warmup": 6000, "rep": 100},
-            "100" : {"warmup": 6000, "rep": 100},
-            "1000" : {"warmup": 6000, "rep": 100},
+            "10" : {"warmup": 6000, "rep": 1000},
+            "100" : {"warmup": 6000, "rep": 1000},
+            "1000" : {"warmup": 6000, "rep": 1000},
             "default" : {"warmup": 1, "rep": 1}
         },
         "rocblas": 
         {
             "10" : {"warmup": 150, "rep": 100},
             "100" : {"warmup": 150, "rep": 100},
-            "1000" : {"warmup": 10, "rep": 10},
+            "1000" : {"warmup": 10, "rep": 100},
             "default" : {"warmup": 1, "rep": 1}
         },
         "rocblas_wo_dt": 
         {
-            "10" : {"warmup": 15, "rep": 100},
-            "100" : {"warmup": 15, "rep": 100},
-            "1000" : {"warmup": 15, "rep": 100},
+            "10" : {"warmup": 15, "rep": 1000},
+            "100" : {"warmup": 15, "rep": 1000},
+            "1000" : {"warmup": 15, "rep": 1000},
             "default" : {"warmup": 1, "rep": 1}
         }
     }

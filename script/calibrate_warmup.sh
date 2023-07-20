@@ -84,9 +84,9 @@ generate_plot()
 {
   if [ $plot == 1 ]; then
     plot_file="$WORKDIR/graphs/warmup/warmup_"$2"_"$1"_$(date +%F-%T).png"
-    echo "Génération du graphique . . ."
+    echo "Graph generation . . ."
     python3 ./python/graph-gen-warmup.py $1 $output_file $plot_file $clock_label
-    echo "Graphique créé dans le fichier $plot_file"
+    echo "Graph created in file $plot_file"
   fi
 }
 
