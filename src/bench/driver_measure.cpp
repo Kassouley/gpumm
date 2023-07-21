@@ -19,7 +19,7 @@ int main(int argc, char* argv[])
     unsigned int n, nwu, nrep;
     if (argc != 4) 
     {
-        fprintf (stderr, "Usage: %s <problem size> <nb warmup> <nb measure>\n", argv[0]);
+        fprintf (stderr, "Usage: %s <problem size> <nb warmup> <nb rep>\n", argv[0]);
         return 1;
     }
     else

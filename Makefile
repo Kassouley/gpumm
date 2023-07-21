@@ -1,14 +1,23 @@
-# -------------------- CC -------------------- #
+ifeq ($(GPU),)
+	GPU=AMD
+endif
 
-ifneq ($(filter $(KERNEL), HIP HIP_WO_DT ROCBLAS ROCBLAS_WO_DT),)
-	CC=hipcc
-else ifneq ($(filter $(KERNEL), CUDA CUDA_WO_DT CUBLAS CUBLAS_WO_DT),)
-	CC=nvcc
-else
-	ifeq ($(GPU), AMD)
-		CC=/opt/rocm/llvm/bin/clang
-	else ifeq ($(GPU), NVIDIA)
-		CC=nvc
+ifeq ($(CLOCK),)
+	CLOCK=MS
+endif
+# -------------------- CC -------------------- #
+CC=none
+ifeq ($(CC),none)
+	ifneq ($(filter $(KERNEL), HIP HIP_WO_DT ROCBLAS ROCBLAS_WO_DT),)
+		CC=hipcc
+	else ifneq ($(filter $(KERNEL), CUDA CUDA_WO_DT CUBLAS CUBLAS_WO_DT),)
+		CC=nvcc
+	else
+		ifeq ($(GPU), AMD)
+			CC=/opt/rocm/llvm/bin/clang
+		else ifeq ($(GPU), NVIDIA)
+			CC=nvc
+		endif
 	endif
 endif
 
@@ -136,7 +145,7 @@ measure: src/tab.c src/rdtsc.c src/print_measure.c src/time_measure.c
 	$(CC) -o $@ $^ $(SRC_KERNEL) $(SRC_DRIVER) $(CFLAGS) $(CMEASURE) $(LFLAGS) $(OPT_FLAGS)
 
 calibrate: src/tab.c src/rdtsc.c src/print_calib.c
-	$(CC) -o $@ $^ $(SRC_KERNEL) $(SRC_CALIB) $(CFLAGS) $(CMEASURE) $(LFLAGS) $(OPT_FLAGS)
+	$(CC) -o $@ $^ $(SRC_KERNEL) $(SRC_CALIB) $(CFLAGS) $(LFLAGS) $(OPT_FLAGS)
 	
 # measure_src:
 	
