@@ -33,6 +33,11 @@
     CHECK(hipFree(ptr));\
 }
 
+#define GPUMM_DEVICE_SYNC() \
+{\
+    hipDeviceSynchronize();\
+}\
+
 #if defined(ROCBLAS_WO_DT) || defined(ROCBLAS)
 #define GPUMM_HANDLE_ENABLE
 #define GPUMM_BLAS_HANDLE rocblas_handle

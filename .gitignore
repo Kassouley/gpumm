@@ -6,3 +6,6 @@ output/*
 slurm*
 save/*
 *.o
+calibrate
+measure
+check

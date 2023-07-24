@@ -74,6 +74,7 @@ int main(int argc, char **argv)
         {
             const uint64_t t1 = rdtsc();
             kernel(n, d_a, d_b, d_c);
+            GPUMM_DEVICE_SYNC();
             const uint64_t t2 = rdtsc();
             tdiff[k][m] = t2 - t1;
         }
