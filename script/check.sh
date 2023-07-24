@@ -52,20 +52,26 @@ check_requierment()
 }
 
 ############################################################
-# FUNCTION                                                 #
+# FUNCTIONS                                                #
 ############################################################
+build_kernel()
+{
+  eval echo "Build $kernel_lowercase kernel . . . " $output
+  eval make check -B GPU=$GPU KERNEL=$kernel_uppercase $output
+  check_error "make failed"
+  eval echo "Done" $output
+}
+
 check_kernel()
 {
-  echo -e "Check kernel $1 . . ."
-  eval make check -B GPU=$GPU KERNEL=`echo "$1" | tr '[:lower:]' '[:upper:]'` $output
-  check_error "make echoué"
-  cmd="./check $2 ./output/check_`echo $1 | tr '[:upper:]' '[:lower:]'`.out"
+  build_kernel
+  output_file="./output/check_$kernel_lowercase.out"
+  cmd="./check $data_size $output_file"
   eval echo "exec command : $cmd" $output
   eval $cmd
-  check_error "lancement du programme echoué"
-  echo -e "Comparaison outputs base/$1 . . ."
-  python3 ./python/files_cmp.py `echo "$1" | tr '[:upper:]' '[:lower:]'`
-  check_error "script python echoué"
+  check_error "run failed"
+  echo "Check kernel $kernel_lowercase : $(python3 ./python/check.py ./output/check_basis.out $output_file $data_size)"
+  check_error "script python failed"
 }
 
 ############################################################
@@ -145,16 +151,17 @@ fi
 # START CHECK                                              #
 ############################################################
 echo "Début des vérifications des sorties"
-echo -e "Check base kernel . . ."
+eval echo -e "Check base kernel . . ." $output
 eval make check KERNEL=BASIS GPU=$GPU -B $output
 check_error "make echoué"
 eval ./check $data_size "./output/check_basis.out"
 check_error "lancement du programme echoué"
 
 for i in $kernel_to_check; do
-  kernel=`echo "$i" | tr '[:upper:]' '[:lower:]'`
-  if [[ " ${kernel_list[*]} " =~ " ${kernel} " ]]; then
-    check_kernel $kernel $data_size
+  kernel_lowercase=`echo "$i" | tr '[:upper:]' '[:lower:]'`
+  kernel_uppercase=`echo "$i" | tr '[:lower:]' '[:upper:]'`
+  if [[ " ${kernel_list[*]} " =~ " ${kernel_lowercase} " ]]; then
+    check_kernel
   fi
 done
 

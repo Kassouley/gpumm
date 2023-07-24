@@ -75,9 +75,19 @@ calibrate.sh :
 
 ### Python script
 
-generate_graph.py :
-- take in argument a matrix size, an output file from the measure script and a output png file
-- Generate a graph based on benchmark outputs from the measure script (only for RDTSC metrics)
+check.py :
+- take in argument two output file and a matrix size
+- Check if the two output files are the same and if not, give the max error between these two files
+
+
+graph-gen-measure.py :
+- take in argument a matrix size, an output file from the measure script, a output png file and a time metric (ms or rdtsc)
+- Generate a graph based on benchmark outputs from the measure script
+
+graph-gen-warmup.py :
+- take in argument a matrix size, an output file from the calibrate script, a output png file and a time metric (ms or rdtsc)
+- Generate a graph based on calibration outputs from the calibrate script
+
 
 ## Kernel List
 
