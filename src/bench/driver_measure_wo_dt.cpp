@@ -34,18 +34,15 @@ int main(int argc, char* argv[])
 
     int size = n * n * sizeof(double);
     
-    double *a = (double*)malloc(size);
     double *b = (double*)malloc(size);
     double *c = (double*)malloc(size);
 
     init_tab2d_random(n, &b);
     init_tab2d_random(n, &c);
 
-    double* d_a;
     double* d_b;
     double* d_c;
 
-	GPUMM_ALLOC(d_a, size);
 	GPUMM_ALLOC(d_b, size);
 	GPUMM_ALLOC(d_c, size);
 
@@ -58,6 +55,10 @@ int main(int argc, char* argv[])
 
     for (unsigned int m = 0; m < NB_META; m++)
     {
+        double *a = (double*)malloc(size);
+        double* d_a;
+        GPUMM_ALLOC(d_a, size);
+
         if ( m == 0 )
         {
             for (unsigned int i = 0; i < nwu; i++)
@@ -80,19 +81,20 @@ int main(int argc, char* argv[])
         }
         const uint64_t t2 = measure_clock();
 
-        GPUMM_MEMCPY_DtH(a, d_a, size);
         tdiff[m] = t2 - t1;
+        
+        GPUMM_MEMCPY_DtH(a, d_a, size);
+        GPUMM_FREE(d_a);
+        free(a);
     }
     
     #ifdef GPUMM_HANDLE_ENABLE
     GPUMM_HANDLE_DESTROY(handle);
     #endif     
 
-    GPUMM_FREE(d_a);
     GPUMM_FREE(d_b);
     GPUMM_FREE(d_c);
 
-    free(a);
     free(b);
     free(c);
 

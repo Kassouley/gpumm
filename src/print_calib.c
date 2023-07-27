@@ -3,10 +3,7 @@
 #include <stdint.h>
 #include <unistd.h>
 #include <math.h>
-// #include "print_calib.h"
-#ifndef NB_META
-#define NB_META 31
-#endif
+#include "print_calib.h"
 
 static int cmp_uint64 (const void *a, const void *b)
 {
@@ -47,7 +44,6 @@ void print_calib(unsigned int repm, uint64_t** tdiff, char* file_name)
         deviation[k] = sqrt(deviation[k]);
     }
 
-
     for(unsigned int k = 0 ; k < repm ; k++)
     {
         qsort( tdiff[k], NB_META, sizeof tdiff[0][0], cmp_uint64);
@@ -55,7 +51,6 @@ void print_calib(unsigned int repm, uint64_t** tdiff, char* file_name)
         repm_median[k] = tdiff[k][NB_META/2];
     }
 
-    
     output = fopen(file_name, "w+");
     printf("\nTime per iteration (RDTSC-cycles) :\n");
     printf("%5s %14s %11s %11s %11s %11s\n", "Step", "Average", "Minimum", "Median", "Stability","Deviation");
@@ -88,6 +83,7 @@ void print_calib(unsigned int repm, uint64_t** tdiff, char* file_name)
     free(average);
     free(repm_min);
     free(repm_median);
+    free(deviation);
 }
 
 
