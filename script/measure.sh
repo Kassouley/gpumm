@@ -118,9 +118,9 @@ verbose=0
 output="> /dev/null"
 force=0
 all=0
-plot=0
 clock="RDTSC"
 clock_label="RDTSC-cycles"
+plot=0
 plot_file="$WORKDIR/graphs/graph_$(date +%F-%T).png"
 save=0
 save_file="$WORKDIR/output/measure_$(date +%F-%T).out"
@@ -207,7 +207,7 @@ fi
 if [[ -f $WORKDIR/output/measure_tmp.out ]]; then
   rm $WORKDIR/output/measure_tmp.out
 fi
-echo "     kernel    |     minimum     |     median     |   median/it   |   stability" > $WORKDIR/output/measure_tmp.out
+echo "     kernel    |     minimum     |     median     |   median/it   |   stability (%)" > $WORKDIR/output/measure_tmp.out
 
 
 echo "Measures in progress . . ."
@@ -229,7 +229,7 @@ if [ $plot == 1 ]; then
 fi
 
 echo "---------------------"
-echo "Result Summary : "
+echo "Result Summary ($clock_label): "
 cat $WORKDIR/output/measure_tmp.out
 echo "---------------------"
 
