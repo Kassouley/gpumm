@@ -32,6 +32,11 @@
     CHECK(cudaFree(ptr));\
 }
 
+#define GPUMM_DEVICE_SYNC() \
+{\
+    cudaDeviceSynchronize();\
+}\
+
 #if defined(CUBLAS_WO_DT) || defined(CUBLAS)
 #define GPUMM_HANDLE_ENABLE
 #define GPUMM_BLAS_HANDLE cublasHandle_t

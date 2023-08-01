@@ -64,8 +64,8 @@ int main(int argc, char* argv[])
             for (unsigned int i = 0; i < nwu; i++)
             {
                 kernel(n, d_a, d_b, d_c);
-                GPUMM_DEVICE_SYNC();
             }
+            GPUMM_DEVICE_SYNC();
         }
         else
         {
@@ -77,8 +77,8 @@ int main(int argc, char* argv[])
         for (unsigned int i = 0; i < nrep; i++)
         {
             kernel(n, d_a, d_b, d_c);
-            GPUMM_DEVICE_SYNC();
         }
+        GPUMM_DEVICE_SYNC();
         const uint64_t t2 = measure_clock();
 
         tdiff[m] = t2 - t1;
