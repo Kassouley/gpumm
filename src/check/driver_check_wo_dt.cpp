@@ -75,12 +75,13 @@ int main(int argc, char **argv)
     {
         for (int j = 0; j < n; j++)
         {
-            fprintf(output, "%.10f ", a[i*n+j]);
+            fprintf(output, "%f ", a[i*n+j]);
         }
         fprintf(output, "\n");
     }
     fclose(output);
     
+    free(file_name);
     free(a);
     free(b);
     free(c);

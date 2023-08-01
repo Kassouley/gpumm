@@ -40,18 +40,15 @@ int main(int argc, char **argv)
 
     int size = n * n * sizeof(double);
     
-    double *a = (double*)malloc(size);
     double *b = (double*)malloc(size);
     double *c = (double*)malloc(size);
 
     srand(0);
     init_tab2d_random(n, &b);
     init_tab2d_random(n, &c);
-    double* d_a;
     double* d_b;
     double* d_c;
 
-	GPUMM_ALLOC(d_a, size);
 	GPUMM_ALLOC(d_b, size);
 	GPUMM_ALLOC(d_c, size);
 
@@ -61,6 +58,10 @@ int main(int argc, char **argv)
     printf("Calibration . . . 0%%");
     for (unsigned int m = 0; m < NB_META; m++)
     {
+        double *a = (double*)malloc(size);
+        double* d_a;
+        GPUMM_ALLOC(d_a, size);
+
         for (unsigned int k = 0; k < repm; k++)
         {
             const uint64_t t1 = rdtsc();
@@ -68,20 +69,25 @@ int main(int argc, char **argv)
             const uint64_t t2 = rdtsc();
             tdiff[k][m] = t2 - t1;
         }
+        
         GPUMM_MEMCPY_DtH(a, d_a, size);
+        GPUMM_FREE(d_a);
+        free(a);
+
         sleep(3);
         printf("\rCalibration . . . %d%%",(m*100)/(NB_META-1));
         fflush(stdout);
     }
 
-    GPUMM_FREE(d_a);
     GPUMM_FREE(d_b);
     GPUMM_FREE(d_c);
 
-    free(a);
     free(b);
     free(c);
 
     print_calib(repm, tdiff, file_name);
+    
+    free(file_name);
+
     return EXIT_SUCCESS;
 }

@@ -45,7 +45,6 @@ int main(int argc, char **argv)
 
     int size = n * n * sizeof(double);
     
-    double *a = (double*)malloc(size);
     double *b = (double*)malloc(size);
     double *c = (double*)malloc(size);
 
@@ -60,6 +59,7 @@ int main(int argc, char **argv)
     printf("Calibration . . . 0%%");
     for (unsigned int m = 0; m < NB_META; m++)
     {
+        double *a = (double*)malloc(size);
         for (unsigned int k = 0; k < repm; k++)
         {
             const uint64_t t1 = rdtsc();
@@ -67,6 +67,7 @@ int main(int argc, char **argv)
             const uint64_t t2 = rdtsc();
             tdiff[k][m] = t2 - t1;
         }
+        free(a);
         sleep(3);
         printf("\rCalibration . . . %d%%",(m*100)/(NB_META-1));
         fflush(stdout);
@@ -76,11 +77,13 @@ int main(int argc, char **argv)
     GPUMM_HANDLE_DESTROY(handle);
     #endif
 
-    free(a);
     free(b);
     free(c);
 
     print_calib(repm, tdiff, file_name);
+
+    free(file_name);
+
     return EXIT_SUCCESS;
 }
 

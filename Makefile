@@ -23,7 +23,7 @@ endif
 
 # ------------------ CFLAGS ------------------ #
 
-CFLAGS=-g -Ofast -lm -I./include -D $(KERNEL)
+CFLAGS=-g -O3 -lm -I./include -D $(KERNEL)
 CMEASURE=-D $(CLOCK)
 
 # ------------------ LFLAGS ------------------ #

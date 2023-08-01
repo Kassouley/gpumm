@@ -30,7 +30,6 @@ int main(int argc, char* argv[])
 
     int size = n * n * sizeof(double);
 
-    double *a = (double*)malloc(size);
     double *b = (double*)malloc(size);
     double *c = (double*)malloc(size);
 
@@ -39,6 +38,8 @@ int main(int argc, char* argv[])
 
     for (unsigned int m = 0; m < NB_META; m++)
     {
+        double *a = (double*)malloc(size);
+
         if ( m == 0 )
         {
             for (unsigned int i = 0; i < nwu; i++)
@@ -59,9 +60,10 @@ int main(int argc, char* argv[])
         const uint64_t t2 = measure_clock();
 
         tdiff[m] = t2 - t1;
+        
+        free(a);
     }
 
-    free(a);
     free(b);
     free(c);
 
