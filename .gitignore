@@ -1,5 +1,6 @@
 graphs/*
 output/*
+output/
 !graphs/.gitkeep
 !graphs/warmup/.gitkeep
 !output/.gitkeep
