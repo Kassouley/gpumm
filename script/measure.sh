@@ -13,6 +13,7 @@ usage()
     \t-p,--plot={plot_file} : create a png plot with the results in png file in argument (default: ./graphs/graph_DATE.png)\n
     \t-s,--save={out_file} : save the measure output in file in argument (default: ./output/measure_DATE.out)\n
     \t-v,--verbose : print all make output\n
+    \t-P,--profiler : profile the run using 'rocprof' or 'nsys prof'. Output in output/profiler/\n
     \t-m,--milliseconds : time is in milliseconds instead of RTDSC-Cycles\n
     \t-f,--force : do not ask for starting the measure\n
   problem size :\n\tdefault value = 100\n
