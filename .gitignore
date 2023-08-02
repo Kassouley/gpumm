@@ -9,3 +9,4 @@ save/*
 calibrate
 measure
 check
+*.slurm

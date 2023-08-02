@@ -235,7 +235,7 @@ eval make clean $output
 
 if [ $plot == 1 ]; then
   echo "Graph generation . . ."
-  python3 ./python/graph-gen-measure.py $data_size $WORKDIR/output/tmp/measure_tmp.out $plot_file $clock_label
+  python3 ./python/graph-gen-measure.py $data_size $WORKDIR/output/tmp/measure_tmp.out "$plot_file" "$clock_label"
   echo "Graph created in file $plot_file"
 fi
 
