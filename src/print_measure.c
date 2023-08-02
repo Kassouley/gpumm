@@ -38,7 +38,7 @@ void print_measure(int n, unsigned int nrep, uint64_t tdiff[NB_META])
     else
         printf("Good Stability : %.2f %%\n", stabilite);
 
-    output = fopen("./output/measure_tmp.out", "a");
+    output = fopen("./output/tmp/measure_tmp.out", "a");
     if (output != NULL) 
     {
         fprintf(output, " | %15.4f | %14.3f | %13f | %12f\n", (float)tdiff[0]/nrep, (float)tdiff[NB_META/2]/nrep, (float)tdiff[NB_META/2]/nbitr, stabilite);
@@ -49,7 +49,7 @@ void print_measure(int n, unsigned int nrep, uint64_t tdiff[NB_META])
         char cwd[1028];
         if (getcwd(cwd, sizeof(cwd)) != NULL) 
         {
-            printf("Couldn't open '%s/output/measure_tmp.out' file\n Measure not saved\n", cwd);
+            printf("Couldn't open '%s/output/tmp/measure_tmp.out' file\n Measure not saved\n", cwd);
         }
     }
 }

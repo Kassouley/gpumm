@@ -65,12 +65,12 @@ build_kernel()
 check_kernel()
 {
   build_kernel
-  output_file="./output/check_$kernel_lowercase.out"
+  output_file="./output/check/check_$kernel_lowercase.out"
   cmd="./check $data_size $output_file"
   eval echo "exec command : $cmd" $output
   eval $cmd
   check_error "run failed"
-  echo "Check kernel $kernel_lowercase : $(python3 ./python/check.py ./output/check_basis.out $output_file $data_size)"
+  echo "Check kernel $kernel_lowercase : $(python3 ./python/check.py ./output/check/check_basis.out $output_file $data_size)"
   check_error "script python failed"
 }
 
@@ -154,7 +154,7 @@ echo "Début des vérifications des sorties"
 eval echo -e "Check base kernel . . ." $output
 eval make check KERNEL=BASIS GPU=$GPU -B $output
 check_error "make echoué"
-eval ./check $data_size "./output/check_basis.out"
+eval ./check $data_size "./output/check/check_basis.out"
 check_error "lancement du programme echoué"
 
 for i in $kernel_to_check; do

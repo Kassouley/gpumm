@@ -73,7 +73,16 @@ measure_kernel()
   rep=$( jq $key.rep $config )
   cmd="$WORKDIR/measure $2 $warmup $rep"
   eval echo "exec command : $cmd" $output
-  eval $cmd
+  if [ $profiler == 1 ]; then
+      profiler_dir=profiler_$1_$2_$(date +%F-%T)
+      mkdir $WORKDIR/output/profiler/$profiler_dir
+      case "$GPU" in
+          "NVIDIA") eval "nsys profile -o $WORKDIR/output/profiler/$profiler_dir/$1_$2-rep $cmd" ;;
+          "AMD") eval "rocprof --hip-trace --hsa-trace -o $WORKDIR/output/profiler/$profiler_dir/$1_$2.csv $cmd" ;;
+      esac
+  else
+    eval $cmd
+  fi
   check_error "run measure failed"
 }
 
@@ -121,12 +130,13 @@ all=0
 clock="RDTSC"
 clock_label="RDTSC-cycles"
 plot=0
-plot_file="$WORKDIR/graphs/graph_$(date +%F-%T).png"
+plot_file="$WORKDIR/output/graphs/graph_$(date +%F-%T).png"
 save=0
-save_file="$WORKDIR/output/measure_$(date +%F-%T).out"
+save_file="$WORKDIR/output/measure/measure_$(date +%F-%T).out"
+profiler=0
 
-TEMP=$(getopt -o hfavms::p:: \
-              -l help,force,all,verbose,millisecond,save::,plot:: \
+TEMP=$(getopt -o hfavPms::p:: \
+              -l help,force,all,verbose,profiler,millisecond,save::,plot:: \
               -n $(basename $0) -- "$@")
 
 eval set -- "$TEMP"
@@ -138,6 +148,7 @@ while true ; do
         -a|--all) kernel_to_measure=${kernel_list[@]} ; shift ;;
         -f|--force) force=1 ; shift ;;
         -v|--verbose) verbose=1 ; shift ;;
+        -P|--profiler) profiler=1 ; shift ;;
         -m|--millisecond) clock="MS" ; clock_label="Time (ms)"; shift ;;
         -s|--save) 
             case "$2" in
@@ -204,17 +215,17 @@ fi
 ############################################################
 # START MEASURE                                            #
 ############################################################
-if [[ -f $WORKDIR/output/measure_tmp.out ]]; then
-  rm $WORKDIR/output/measure_tmp.out
+if [[ -f $WORKDIR/output/tmp/measure_tmp.out ]]; then
+  rm $WORKDIR/output/tmp/measure_tmp.out
 fi
-echo "     kernel    |     minimum     |     median     |   median/it   |   stability (%)" > $WORKDIR/output/measure_tmp.out
+echo "     kernel    |     minimum     |     median     |   median/it   |   stability (%)" > $WORKDIR/output/tmp/measure_tmp.out
 
 
 echo "Measures in progress . . ."
 for i in $kernel_to_measure; do
   if [[ " ${kernel_list[*]} " =~ " ${i} " ]]; then
     kernel_name=`printf "%14s" "$i"`
-    echo -n "$kernel_name" >> $WORKDIR/output/measure_tmp.out
+    echo -n "$kernel_name" >> $WORKDIR/output/tmp/measure_tmp.out
     measure_kernel $i $data_size
   fi
 done
@@ -224,16 +235,16 @@ eval make clean $output
 
 if [ $plot == 1 ]; then
   echo "Graph generation . . ."
-  python3 ./python/graph-gen-measure.py $data_size $WORKDIR/output/measure_tmp.out $plot_file $clock_label
+  python3 ./python/graph-gen-measure.py $data_size $WORKDIR/output/tmp/measure_tmp.out $plot_file $clock_label
   echo "Graph created in file $plot_file"
 fi
 
 echo "---------------------"
 echo "Result Summary ($clock_label): "
-cat $WORKDIR/output/measure_tmp.out
+cat $WORKDIR/output/tmp/measure_tmp.out
 echo "---------------------"
 
 if [ $save == 1 ]; then
-  mv $WORKDIR/output/measure_tmp.out $save_file
+  mv $WORKDIR/output/tmp/measure_tmp.out $save_file
 fi
 

@@ -203,7 +203,7 @@ fi
 ############################################################
 # START CALIBRATION                                        #
 ############################################################
-output_file="$WORKDIR/output/calibration_warmup_tmp.out"
+output_file="$WORKDIR/output/tmp/calibration_warmup_tmp.out"
 if [[ -f $output_file ]]; then
   rm $output_file
 fi
