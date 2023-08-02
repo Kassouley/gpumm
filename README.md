@@ -15,8 +15,15 @@ Matrix Multiply Benchmark on GPU and CPU using OpenMP, OpenACC, HIP, rocBLAS, CU
 Advice : use the script in the 'script/' folder
 
 No particulary installation needed.
-Just build with :
+
+Just :
 ```bash
+./setup.sh
+```
+
+And build with :
+```bash
+./setup.sh
 make measure KERNEL=[KERNEL_NAME] CLOCK=[RDTSC|MS] GPU=[NVIDIA|AMD] CC=whateveruwant
 make check KERNEL=[KERNEL_NAME] GPU=[NVIDIA|AMD] CC=whateveruwant
 make calibrate KERNEL=[KERNEL_NAME] GPU=[NVIDIA|AMD] CC=whateveruwant
